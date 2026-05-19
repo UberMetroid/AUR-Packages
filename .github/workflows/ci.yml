@@ -1,0 +1,48 @@
+name: Verify AUR Packages
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  schedule:
+    - cron: '0 0 * * *' # Every day at midnight
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+      options: --privileged # Required for some packaging tasks/chroots
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup environment
+      run: |
+        pacman -Syu --noconfirm base-devel devtools namcap sudo git
+        useradd -m builduser
+        echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+        # Fix permissions for the workspace
+        chown -R builduser:builduser .
+
+    - name: Verify synology-drive-client-bin
+      run: sudo -u builduser bash synology-drive-client-bin/test-package.sh
+      continue-on-error: true
+
+    - name: Verify synology-chat-client-bin
+      run: sudo -u builduser bash synology-chat-client-bin/test-package.sh
+      continue-on-error: true
+
+    - name: Verify mono-tracker-git
+      run: sudo -u builduser bash mono-tracker-git/test-package.sh
+      continue-on-error: true
+
+    - name: Verify msty-studio
+      run: sudo -u builduser bash msty-studio/test-package.sh
+      continue-on-error: true
+
+    - name: Verify msty-claw
+      run: sudo -u builduser bash msty-claw/test-package.sh
+      continue-on-error: true
