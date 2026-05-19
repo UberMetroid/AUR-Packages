@@ -114,3 +114,20 @@ jobs:
           '
         fi
       continue-on-error: true
+
+    - name: bleachbit-tui-git
+      run: |
+        sudo -u builduser bash bleachbit-tui-git/test-package.sh
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+          sudo -u builduser bash -c '
+            git config --global user.name "UberMetroid"
+            git config --global user.email "jerydleuck@gmail.com"
+            # Note: The AUR repo for bleachbit-tui-git must be created first before auto-push will work.
+            git clone "ssh://aur@aur.archlinux.org/bleachbit-tui-git.git" /tmp/bleachbit-tui-git-aur || exit 0
+            rsync -a --delete --exclude=".git" bleachbit-tui-git/ /tmp/bleachbit-tui-git-aur/
+            cd /tmp/bleachbit-tui-git-aur
+            git add .
+            git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
+          '
+        fi
+      continue-on-error: true

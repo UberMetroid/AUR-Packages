@@ -13,6 +13,7 @@ This repository serves as a centralized management hub and CI/CD pipeline for AU
 | [**msty-studio**](https://aur.archlinux.org/packages/msty-studio) | Desktop AI workflow application (Local/Private) | [AUR](https://aur.archlinux.org/packages/msty-studio) |
 | [**msty-claw**](https://aur.archlinux.org/packages/msty-claw) | Autonomous AI agent for complex task orchestration | [AUR](https://aur.archlinux.org/packages/msty-claw) |
 | [**mono-tracker-git**](https://aur.archlinux.org/packages/mono-tracker-git) | Privacy-first screen time tracking application | [AUR](https://aur.archlinux.org/packages/mono-tracker-git) |
+| [**bleachbit-tui-git**](https://aur.archlinux.org/packages/bleachbit-tui-git) | Free space and maintain privacy (Experimental TUI branch) | [AUR](https://aur.archlinux.org/packages/bleachbit-tui-git) |
 
 ## 🛠 Automation & Testing
 
