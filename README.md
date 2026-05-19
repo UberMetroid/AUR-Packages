@@ -30,6 +30,3 @@ To run the full test suite locally, navigate to a package directory and run:
 
 ## 📜 Maintenance
 This hub is the single source of truth for these packages. Updates are first verified here before being pushed to the Arch User Repository.
-
----
-*Maintained by jeryd leuck ([UberMetroid](https://github.com/UberMetroid))*
