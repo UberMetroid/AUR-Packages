@@ -1,4 +1,4 @@
-name: Verify AUR Packages
+name: Verify and Deploy AUR Packages
 
 on:
   push:
@@ -19,30 +19,98 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup environment
+    - name: Setup environment and SSH
       run: |
-        pacman -Syu --noconfirm base-devel devtools namcap sudo git
+        pacman -Syu --noconfirm base-devel devtools namcap sudo git openssh rsync
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+        
+        # Setup SSH for AUR pushing
+        mkdir -p /home/builduser/.ssh
+        echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}" > /home/builduser/.ssh/id_rsa
+        chmod 600 /home/builduser/.ssh/id_rsa
+        ssh-keyscan aur.archlinux.org >> /home/builduser/.ssh/known_hosts
+        chown -R builduser:builduser /home/builduser/.ssh
+        
         # Fix permissions for the workspace
         chown -R builduser:builduser .
 
-    - name: Verify synology-drive-client-bin
-      run: sudo -u builduser bash synology-drive-client-bin/test-package.sh
+    - name: synology-drive-client-bin
+      run: |
+        sudo -u builduser bash synology-drive-client-bin/test-package.sh
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+          sudo -u builduser bash -c '
+            git config --global user.name "UberMetroid"
+            git config --global user.email "jerydleuck@gmail.com"
+            git clone "ssh://aur@aur.archlinux.org/synology-drive-client-bin.git" /tmp/synology-drive-client-bin-aur
+            rsync -a --delete --exclude=".git" synology-drive-client-bin/ /tmp/synology-drive-client-bin-aur/
+            cd /tmp/synology-drive-client-bin-aur
+            git add .
+            git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
+          '
+        fi
       continue-on-error: true
 
-    - name: Verify synology-chat-client-bin
-      run: sudo -u builduser bash synology-chat-client-bin/test-package.sh
+    - name: synology-chat-client-bin
+      run: |
+        sudo -u builduser bash synology-chat-client-bin/test-package.sh
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+          sudo -u builduser bash -c '
+            git config --global user.name "UberMetroid"
+            git config --global user.email "jerydleuck@gmail.com"
+            git clone "ssh://aur@aur.archlinux.org/synology-chat-client-bin.git" /tmp/synology-chat-client-bin-aur
+            rsync -a --delete --exclude=".git" synology-chat-client-bin/ /tmp/synology-chat-client-bin-aur/
+            cd /tmp/synology-chat-client-bin-aur
+            git add .
+            git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
+          '
+        fi
       continue-on-error: true
 
-    - name: Verify mono-tracker-git
-      run: sudo -u builduser bash mono-tracker-git/test-package.sh
+    - name: mono-tracker-git
+      run: |
+        sudo -u builduser bash mono-tracker-git/test-package.sh
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+          sudo -u builduser bash -c '
+            git config --global user.name "UberMetroid"
+            git config --global user.email "jerydleuck@gmail.com"
+            git clone "ssh://aur@aur.archlinux.org/mono-tracker-git.git" /tmp/mono-tracker-git-aur
+            rsync -a --delete --exclude=".git" mono-tracker-git/ /tmp/mono-tracker-git-aur/
+            cd /tmp/mono-tracker-git-aur
+            git add .
+            git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
+          '
+        fi
       continue-on-error: true
 
-    - name: Verify msty-studio
-      run: sudo -u builduser bash msty-studio/test-package.sh
+    - name: msty-studio
+      run: |
+        sudo -u builduser bash msty-studio/test-package.sh
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+          sudo -u builduser bash -c '
+            git config --global user.name "UberMetroid"
+            git config --global user.email "jerydleuck@gmail.com"
+            git clone "ssh://aur@aur.archlinux.org/msty-studio.git" /tmp/msty-studio-aur
+            rsync -a --delete --exclude=".git" msty-studio/ /tmp/msty-studio-aur/
+            cd /tmp/msty-studio-aur
+            git add .
+            git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
+          '
+        fi
       continue-on-error: true
 
-    - name: Verify msty-claw
-      run: sudo -u builduser bash msty-claw/test-package.sh
+    - name: msty-claw
+      run: |
+        sudo -u builduser bash msty-claw/test-package.sh
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+          sudo -u builduser bash -c '
+            git config --global user.name "UberMetroid"
+            git config --global user.email "jerydleuck@gmail.com"
+            git clone "ssh://aur@aur.archlinux.org/msty-claw.git" /tmp/msty-claw-aur
+            rsync -a --delete --exclude=".git" msty-claw/ /tmp/msty-claw-aur/
+            cd /tmp/msty-claw-aur
+            git add .
+            git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
+          '
+        fi
       continue-on-error: true
