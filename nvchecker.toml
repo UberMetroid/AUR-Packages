@@ -1,0 +1,28 @@
+[synology-drive-client-bin]
+source = "regex"
+url = "https://www.synology.com/en-global/releaseNote/SynologyDriveClient"
+regex = 'Version: (\d+\.\d+\.\d+)-(\d+)'
+
+[synology-chat-client-bin]
+source = "regex"
+url = "https://www.synology.com/en-global/releaseNote/SynologyChatClient"
+regex = 'Version: (\d+\.\d+\.\d+)-(\d+)'
+
+[msty-studio]
+source = "regex"
+url = "https://msty.ai/changelog"
+regex = 'Version ([0-9.]+)'
+
+[msty-claw]
+source = "regex"
+url = "https://msty.ai/changelog"
+regex = 'Version ([0-9.]+)'
+
+[mono-tracker-git]
+source = "git"
+git = "https://github.com/xonoxc/mono.git"
+
+[bleachbit-tui-git]
+source = "git"
+git = "https://github.com/bleachbit/bleachbit.git"
+branch = "tui"
