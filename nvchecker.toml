@@ -1,22 +1,22 @@
 [synology-drive-client-bin]
 source = "regex"
-url = "https://www.synology.com/en-global/releaseNote/SynologyDriveClient"
-regex = 'Version: (\d+\.\d+\.\d+)-(\d+)'
+url = "https://www.synology.com/api/releaseNote/findChangeLog?identify=SynologyDriveClient&lang=en-global"
+regex = '"version":"(\d+\.\d+\.\d+-\d+)"'
 
 [synology-chat-client-bin]
 source = "regex"
-url = "https://www.synology.com/en-global/releaseNote/SynologyChatClient"
-regex = 'Version: (\d+\.\d+\.\d+)-(\d+)'
+url = "https://www.synology.com/api/releaseNote/findChangeLog?identify=ChatClient&lang=en-global"
+regex = '"version":"(\d+\.\d+\.\d+-\d+)"'
 
 [msty-studio]
 source = "regex"
 url = "https://msty.ai/changelog"
-regex = 'Version ([0-9.]+)'
+regex = 'Msty Studio ([0-9.]+)'
 
 [msty-claw]
 source = "regex"
-url = "https://msty.ai/changelog"
-regex = 'Version ([0-9.]+)'
+url = "https://msty.ai/claw/changelog"
+regex = 'Msty Claw ([0-9.]+)'
 
 [mono-tracker-git]
 source = "git"

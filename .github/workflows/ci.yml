@@ -7,6 +7,10 @@ on:
     branches: [ master, main ]
   schedule:
     - cron: '0 0 * * *' # Every day at midnight
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update:
@@ -18,19 +22,68 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Setup environment
+      with:
+        ref: master
+        fetch-depth: 0
+
+    - name: Setup environment and SSH
       run: |
-        pacman -Syu --noconfirm base-devel devtools jq nvchecker pacman-contrib git sudo
+        pacman -Syu --noconfirm base-devel devtools jq nvchecker pacman-contrib git sudo openssh rsync namcap
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+        
+        # Setup SSH for AUR pushing
+        mkdir -p /home/builduser/.ssh
+        echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}" > /home/builduser/.ssh/id_rsa
+        chmod 600 /home/builduser/.ssh/id_rsa
+        ssh-keyscan aur.archlinux.org >> /home/builduser/.ssh/known_hosts
+        chown -R builduser:builduser /home/builduser/.ssh
+        
         chown -R builduser:builduser .
+
     - name: Run Update Check
       run: |
         git config --global user.name "UberMetroid"
         git config --global user.email "jerydleuck@gmail.com"
-        sudo -u builduser bash scripts/update-packages.sh
-    - name: Push changes
+        sudo -H -u builduser bash scripts/update-packages.sh
+
+    - name: Build and Push updated packages to AUR
       run: |
+        # Identify changed packages compared to origin/master
+        changed_files=$(git diff --name-only origin/master)
+        echo "Changed files: $changed_files"
+        
+        for pkgname in synology-drive-client-bin synology-chat-client-bin mono-tracker-git msty-studio msty-claw bleachbit-tui-git; do
+          if echo "$changed_files" | grep -q "^$pkgname/"; then
+            echo "Package $pkgname has updates. Building and deploying..."
+            
+            # Run build and test
+            sudo -H -u builduser bash $pkgname/test-package.sh
+            
+            # Deploy to AUR
+            echo "Deploying $pkgname to AUR..."
+            sudo -H -u builduser bash -c "
+              git config --global user.name 'UberMetroid'
+              git config --global user.email 'jerydleuck@gmail.com'
+              
+              if [[ '$pkgname' == 'bleachbit-tui-git' ]]; then
+                git clone 'ssh://aur@aur.archlinux.org/bleachbit-tui-git.git' /tmp/bleachbit-tui-git-aur || exit 0
+              else
+                git clone 'ssh://aur@aur.archlinux.org/${pkgname}.git' /tmp/${pkgname}-aur
+              fi
+              
+              rsync -a --delete --exclude='.git' ${pkgname}/ /tmp/${pkgname}-aur/
+              cd /tmp/${pkgname}-aur
+              git add .
+              git diff --staged --quiet || (git commit -m 'Update from AUR-Packages hub' && git push origin master)
+            "
+          fi
+        done
+      continue-on-error: true
+
+    - name: Push changes back to GitHub
+      run: |
+        git config --global --add safe.directory /__w/AUR-Packages/AUR-Packages
         git push origin master
 
   verify:
@@ -63,9 +116,9 @@ jobs:
 
     - name: synology-drive-client-bin
       run: |
-        sudo -u builduser bash synology-drive-client-bin/test-package.sh
+        sudo -H -u builduser bash synology-drive-client-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -u builduser bash -c '
+          sudo -H -u builduser bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/synology-drive-client-bin.git" /tmp/synology-drive-client-bin-aur
@@ -79,9 +132,9 @@ jobs:
 
     - name: synology-chat-client-bin
       run: |
-        sudo -u builduser bash synology-chat-client-bin/test-package.sh
+        sudo -H -u builduser bash synology-chat-client-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -u builduser bash -c '
+          sudo -H -u builduser bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/synology-chat-client-bin.git" /tmp/synology-chat-client-bin-aur
@@ -95,9 +148,9 @@ jobs:
 
     - name: mono-tracker-git
       run: |
-        sudo -u builduser bash mono-tracker-git/test-package.sh
+        sudo -H -u builduser bash mono-tracker-git/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -u builduser bash -c '
+          sudo -H -u builduser bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/mono-tracker-git.git" /tmp/mono-tracker-git-aur
@@ -111,9 +164,9 @@ jobs:
 
     - name: msty-studio
       run: |
-        sudo -u builduser bash msty-studio/test-package.sh
+        sudo -H -u builduser bash msty-studio/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -u builduser bash -c '
+          sudo -H -u builduser bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/msty-studio.git" /tmp/msty-studio-aur
@@ -127,9 +180,9 @@ jobs:
 
     - name: msty-claw
       run: |
-        sudo -u builduser bash msty-claw/test-package.sh
+        sudo -H -u builduser bash msty-claw/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -u builduser bash -c '
+          sudo -H -u builduser bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/msty-claw.git" /tmp/msty-claw-aur
@@ -143,9 +196,9 @@ jobs:
 
     - name: bleachbit-tui-git
       run: |
-        sudo -u builduser bash bleachbit-tui-git/test-package.sh
+        sudo -H -u builduser bash bleachbit-tui-git/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -u builduser bash -c '
+          sudo -H -u builduser bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             # Note: The AUR repo for bleachbit-tui-git must be created first before auto-push will work.
