@@ -83,7 +83,7 @@ jobs:
 
     - name: Push changes back to GitHub
       run: |
-        git config --global --add safe.directory /__w/AUR-Packages/AUR-Packages
+        git config --global --add safe.directory '*'
         git push origin master
 
   verify:
