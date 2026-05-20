@@ -37,9 +37,9 @@ package() {
 
   # The upstream Makefile on the 'tui' branch currently misses the TUI module files.
   # We manually install them here until it's fixed upstream.
-  mkdir -p "$pkgdir/usr/share/bleachbit/bleachbit/tui/screens"
-  install -Dm644 bleachbit/tui/*.py "$pkgdir/usr/share/bleachbit/bleachbit/tui/"
-  install -Dm644 bleachbit/tui/screens/*.py "$pkgdir/usr/share/bleachbit/bleachbit/tui/screens/"
+  mkdir -p "$pkgdir/usr/share/bleachbit/tui/screens"
+  install -Dm644 bleachbit/tui/*.py "$pkgdir/usr/share/bleachbit/tui/"
+  install -Dm644 bleachbit/tui/screens/*.py "$pkgdir/usr/share/bleachbit/tui/screens/"
   
   # Install the TUI entrypoint
   install -Dm755 bleachbit_tui.py "$pkgdir/usr/bin/bleachbit-tui"
