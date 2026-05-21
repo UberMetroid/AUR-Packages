@@ -8,12 +8,12 @@ source = "regex"
 url = "https://www.synology.com/api/releaseNote/findChangeLog?identify=ChatClient&lang=en-global"
 regex = '"version":"(\d+\.\d+\.\d+-\d+)"'
 
-[msty-studio]
+[msty-studio-bin]
 source = "regex"
 url = "https://msty.ai/changelog"
 regex = 'Msty Studio ([0-9.]+)'
 
-[msty-claw]
+[msty-claw-bin]
 source = "regex"
 url = "https://msty.ai/claw/changelog"
 regex = 'Msty Claw ([0-9.]+)'

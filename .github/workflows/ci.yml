@@ -63,7 +63,7 @@ jobs:
         changed_files=$(git diff --name-only origin/master)
         echo "Changed files: $changed_files"
         
-        for pkgname in synology-drive-client-bin synology-chat-client-bin mono-tracker-git msty-studio msty-claw bleachbit-tui-git; do
+        for pkgname in synology-drive-client-bin synology-chat-client-bin mono-tracker-git msty-studio-bin msty-claw-bin bleachbit-tui-git; do
           if echo "$changed_files" | grep -q "^$pkgname/"; then
             echo "Package $pkgname has updates. Building and deploying..."
             
@@ -178,32 +178,32 @@ jobs:
         fi
       continue-on-error: true
 
-    - name: msty-studio
+    - name: msty-studio-bin
       run: |
-        sudo -H -u builduser bash msty-studio/test-package.sh
+        sudo -H -u builduser bash msty-studio-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
           sudo -H -u builduser bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
-            git clone "ssh://aur@aur.archlinux.org/msty-studio.git" /tmp/msty-studio-aur
-            rsync -a --delete --exclude=".git" msty-studio/ /tmp/msty-studio-aur/
-            cd /tmp/msty-studio-aur
+            git clone "ssh://aur@aur.archlinux.org/msty-studio-bin.git" /tmp/msty-studio-bin-aur
+            rsync -a --delete --exclude=".git" msty-studio-bin/ /tmp/msty-studio-bin-aur/
+            cd /tmp/msty-studio-bin-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
           '
         fi
       continue-on-error: true
 
-    - name: msty-claw
+    - name: msty-claw-bin
       run: |
-        sudo -H -u builduser bash msty-claw/test-package.sh
+        sudo -H -u builduser bash msty-claw-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
           sudo -H -u builduser bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
-            git clone "ssh://aur@aur.archlinux.org/msty-claw.git" /tmp/msty-claw-aur
-            rsync -a --delete --exclude=".git" msty-claw/ /tmp/msty-claw-aur/
-            cd /tmp/msty-claw-aur
+            git clone "ssh://aur@aur.archlinux.org/msty-claw-bin.git" /tmp/msty-claw-bin-aur
+            rsync -a --delete --exclude=".git" msty-claw-bin/ /tmp/msty-claw-bin-aur/
+            cd /tmp/msty-claw-bin-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
           '

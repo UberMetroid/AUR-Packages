@@ -1,5 +1,5 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
-pkgname=msty-claw
+pkgname=msty-claw-bin
 pkgver=0.7.0
 pkgrel=1
 pkgdesc="Msty Claw is an autonomous AI agent application designed for complex task orchestration (Beta)"
@@ -11,8 +11,8 @@ optdepends=('cuda: NVIDIA GPU acceleration'
             'rocm-core: AMD GPU acceleration'
             'docker: Intel GPU acceleration (via ipex-llm container workaround)'
             'libpulse: PulseAudio/Pipewire support')
-provides=('msty-claw' 'msty-claw-bin')
-conflicts=('msty-claw' 'msty-claw-bin')
+provides=('msty-claw')
+conflicts=('msty-claw')
 filename="MstyClaw_amd64_${pkgver}.deb"
 source=("$filename::https://next-assets.msty.studio/mstyclaw/latest/linux/MstyClaw_amd64.deb?ver=$pkgver")
 sha256sums=('d05967d6ce920b865b1b58cb6612e68b1f0426e4b00e3f07c29b89c50d83156d')
