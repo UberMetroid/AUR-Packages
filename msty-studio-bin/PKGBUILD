@@ -4,7 +4,7 @@
 
 pkgname=msty-studio-bin
 pkgver=2.7.4
-pkgrel=3
+pkgrel=4
 pkgdesc="Desktop AI workflow application (Local/Private) (client-bin, verified with clean chroot + ldd checks)"
 arch=('x86_64')
 url="https://msty.ai/"
@@ -43,11 +43,26 @@ package() {
   chmod 4755 "$pkgdir/opt/MstyStudio/chrome-sandbox"
 
   sed -i 's/^Name=.*/Name=Msty Studio/' "$pkgdir/usr/share/applications/MstyStudio.desktop"
+  sed -i 's/^Icon=.*/Icon=msty-studio/' "$pkgdir/usr/share/applications/MstyStudio.desktop" 2>/dev/null || true
   sed -i '/^exec=mstystudio/d' "$pkgdir/usr/share/applications/MstyStudio.desktop"
 
   install -d "$pkgdir/usr/bin"
   ln -s /opt/MstyStudio/MstyStudio "$pkgdir/usr/bin/msty"
   ln -s /opt/MstyStudio/MstyStudio "$pkgdir/usr/bin/msty-studio"
+
+  # Install icons with correct name for launcher and taskbar
+  for size in 16 32 48 64 128 256 512; do
+    icon_dir="$srcdir/pkg-contents/usr/share/icons/hicolor/${size}x${size}/apps"
+    if [ -f "$icon_dir/MstyStudio.png" ]; then
+      install -Dm644 "$icon_dir/MstyStudio.png" "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/msty-studio.png"
+    elif [ -f "$icon_dir/mstystudio.png" ]; then
+      install -Dm644 "$icon_dir/mstystudio.png" "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/msty-studio.png"
+    fi
+  done
+  # pixmaps fallback
+  for icon in "$srcdir/pkg-contents/usr/share/icons/hicolor/256x256/apps/MstyStudio.png" "$srcdir/pkg-contents/usr/share/icons/hicolor/256x256/apps/mstystudio.png"; do
+    [ -f "$icon" ] && install -Dm644 "$icon" "$pkgdir/usr/share/pixmaps/msty-studio.png" && break
+  done
 
   install -Dm644 "$pkgdir/opt/MstyStudio/LICENSE.electron.txt"   "$pkgdir/usr/share/licenses/$pkgname/LICENSE.electron"
   install -Dm644 "$pkgdir/opt/MstyStudio/LICENSES.chromium.html" "$pkgdir/usr/share/licenses/$pkgname/LICENSES.chromium.html"

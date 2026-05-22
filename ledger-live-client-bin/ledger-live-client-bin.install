@@ -4,6 +4,9 @@ post_install() {
   echo ">>> To use your Ledger hardware device, install udev rules:"
   echo ">>>   sudo pacman -S ledger-udev"
   update-desktop-database -q
+  if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+  fi
 }
 
 post_upgrade() {

@@ -4,7 +4,7 @@
 
 pkgname=msty-claw-bin
 pkgver=0.7.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Autonomous AI agent for complex task orchestration (client-bin, verified with clean chroot + ldd checks)"
 arch=('x86_64')
 url="https://msty.ai/claw"
@@ -49,6 +49,20 @@ package() {
 
   # Install our clean professional desktop file
   install -Dm644 "$srcdir/msty-claw.desktop" "$pkgdir/usr/share/applications/msty-claw.desktop"
+
+  # Install icons with correct name (msty-claw) for proper launcher/taskbar display
+  for size in 16 32 48 64 128 256 512; do
+    icon_dir="$srcdir/pkg-contents/usr/share/icons/hicolor/${size}x${size}/apps"
+    if [ -f "$icon_dir/Msty Claw.png" ]; then
+      install -Dm644 "$icon_dir/Msty Claw.png" "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/msty-claw.png"
+    elif [ -f "$icon_dir/mstyclaw.png" ]; then
+      install -Dm644 "$icon_dir/mstyclaw.png" "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/msty-claw.png"
+    fi
+  done
+  # pixmaps fallback
+  for icon in "$srcdir/pkg-contents/usr/share/icons/hicolor/256x256/apps/Msty Claw.png" "$srcdir/pkg-contents/usr/share/icons/hicolor/256x256/apps/mstyclaw.png"; do
+    [ -f "$icon" ] && install -Dm644 "$icon" "$pkgdir/usr/share/pixmaps/msty-claw.png" && break
+  done
 
   install -Dm644 "$pkgdir/usr/lib/Msty Claw/_up_/THIRD_PARTY_NOTICES.txt" "$pkgdir/usr/share/licenses/$pkgname/THIRD_PARTY_NOTICES.txt"
 }

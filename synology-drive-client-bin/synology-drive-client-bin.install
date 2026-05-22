@@ -2,6 +2,10 @@ post_install() {
   echo ">>> Synology Drive Client installation complete."
   echo ">>> To enable the background sync engine, run:"
   echo ">>>   systemctl --user enable --now synology-drive"
+  update-desktop-database -q
+  if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+  fi
 }
 
 post_upgrade() {
