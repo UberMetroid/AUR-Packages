@@ -1,4 +1,6 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
+# Part of https://github.com/UberMetroid/AUR-Packages (clean chroot + ldd verified)
+
 pkgname=bleachbit-tui-git
 pkgver=6.0.0.r17.9bb4a493
 pkgrel=5
@@ -9,7 +11,7 @@ license=('GPL-3.0-or-later')
 depends=('python' 'python-requests' 'python-chardet' 'python-textual' 'python-psutil')
 optdepends=('gtk3: for GTK+ UI' 'python-gobject: for GTK+ UI')
 makedepends=('git' 'make')
-provides=('bleachbit')
+provides=("bleachbit=${pkgver%%.r*}")
 conflicts=('bleachbit' 'bleachbit-git')
 
 source=("bleachbit::git+https://github.com/bleachbit/bleachbit.git#branch=tui"

@@ -1,4 +1,6 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
+# Part of https://github.com/UberMetroid/AUR-Packages (clean chroot + ldd verified)
+
 pkgname=msty-claw-bin
 pkgver=0.7.0
 pkgrel=2

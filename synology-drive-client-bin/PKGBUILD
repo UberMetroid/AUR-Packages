@@ -1,4 +1,6 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
+# Part of https://github.com/UberMetroid/AUR-Packages (clean chroot + ldd verified)
+
 pkgname=synology-drive-client-bin
 pkgver=4.0.3_17892
 _pkgver=4.0.3

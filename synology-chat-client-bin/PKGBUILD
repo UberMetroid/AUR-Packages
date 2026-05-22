@@ -1,4 +1,6 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
+# Part of https://github.com/UberMetroid/AUR-Packages (clean chroot + ldd verified)
+
 pkgname=synology-chat-client-bin
 pkgver=1.2.3_0232
 _pkgver=1.2.3-0232

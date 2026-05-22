@@ -14,7 +14,7 @@ pkgbase = bleachbit-tui-git
 	depends = python-psutil
 	optdepends = gtk3: for GTK+ UI
 	optdepends = python-gobject: for GTK+ UI
-	provides = bleachbit
+	provides = bleachbit=6.0.0
 	conflicts = bleachbit
 	conflicts = bleachbit-git
 	source = bleachbit::git+https://github.com/bleachbit/bleachbit.git#branch=tui

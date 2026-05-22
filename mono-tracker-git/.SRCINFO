@@ -15,9 +15,7 @@ pkgbase = mono-tracker-git
 	depends = libxkbcommon
 	depends = wayland
 	provides = mono-tracker=v0.3.0
-	provides = mono=v0.3.0
 	conflicts = mono-tracker
-	conflicts = mono
 	source = mono::git+https://github.com/xonoxc/mono.git
 	source = mono-tracker.service
 	source = mono-tracker.desktop

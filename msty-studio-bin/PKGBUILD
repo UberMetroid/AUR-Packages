@@ -1,4 +1,6 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
+# Part of https://github.com/UberMetroid/AUR-Packages (clean chroot + ldd verified)
+
 pkgname=msty-studio-bin
 pkgver=2.7.4
 pkgrel=2
@@ -12,8 +14,8 @@ optdepends=('cuda: NVIDIA GPU acceleration'
             'docker: Intel GPU acceleration (via ipex-llm container workaround)'
             'libpulse: Support for Voice-to-Text and Text-to-Voice features'
             'ollama: Use system-wide Ollama instead of the bundled version')
-provides=('msty' 'msty-deb' 'msty-rocm-bin' 'msty-studio')
-conflicts=('msty' 'msty-deb' 'msty-bin' 'msty-rocm-bin' 'msty-studio')
+provides=('msty-studio')
+conflicts=('msty-studio' 'msty' 'msty-bin')
 
 source=("MstyStudio_amd64_${pkgver}.deb::https://next-assets.msty.studio/app/latest/linux/MstyStudio_amd64.deb?ver=$pkgver")
 sha256sums=('ef26a2ee5d764e7a2939b8a580a2b3af94300fbc7773f1b53335c9d450f2a97f')
