@@ -47,13 +47,17 @@ build() {
 }
 
 check() {
-  find "$pkgdir" -type f -exec sh -c 'file "$1" | grep -q ELF' _ {} \; -print | while read -r elf; do
-    if ldd "$elf" | grep -q "not found"; then
-      echo "Broken dependencies in $elf:"
-      ldd "$elf" | grep "not found"
-      exit 1
+  # Check the Rust binaries we actually built (they live in target/release after build())
+  for bin in target/release/mono target/release/mono-tracker target/release/mono-cli; do
+    if [ -x "$bin" ]; then
+      if ldd "$bin" 2>/dev/null | grep -q "not found"; then
+        echo "ERROR: Broken dependencies in $bin"
+        ldd "$bin" | grep "not found"
+        exit 1
+      fi
     fi
   done
+  echo "check() passed for mono-tracker binaries"
 }
 
 package() {
