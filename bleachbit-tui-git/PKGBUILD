@@ -1,7 +1,7 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
 pkgname=bleachbit-tui-git
 pkgver=6.0.0.r17.9bb4a493
-pkgrel=4
+pkgrel=5
 pkgdesc="Free space and maintain privacy (Experimental TUI branch)"
 arch=('any')
 url="https://github.com/bleachbit/bleachbit"
@@ -11,6 +11,7 @@ optdepends=('gtk3: for GTK+ UI' 'python-gobject: for GTK+ UI')
 makedepends=('git' 'make')
 provides=('bleachbit')
 conflicts=('bleachbit' 'bleachbit-git')
+
 source=("bleachbit::git+https://github.com/bleachbit/bleachbit.git#branch=tui"
         "bleachbit-tui.desktop"
         "bleachbit-tui-launcher.sh")
@@ -31,25 +32,22 @@ build() {
 package() {
   cd bleachbit
   make DESTDIR="$pkgdir" prefix=/usr install
-  
-  # Remove the upstream GUI desktop file so we don't have duplicate launchers
+
+  # Remove upstream GUI launcher to avoid duplicates
   rm -f "$pkgdir/usr/share/applications/org.bleachbit.BleachBit.desktop"
 
-  # The upstream Makefile on the 'tui' branch currently misses the TUI module files.
-  # We manually install them here until it's fixed upstream.
+  # === Temporary workaround ===
+  # The 'tui' branch Makefile does not yet install the TUI Python modules.
+  # We manually install them here until upstream adds proper support.
   mkdir -p "$pkgdir/usr/share/bleachbit/tui/screens"
   install -Dm644 bleachbit/tui/*.py "$pkgdir/usr/share/bleachbit/tui/"
   install -Dm644 bleachbit/tui/screens/*.py "$pkgdir/usr/share/bleachbit/tui/screens/"
-  
-  # Install the TUI entrypoint
+
   install -Dm755 bleachbit_tui.py "$pkgdir/usr/bin/bleachbit-tui"
 
-  # Fix Python path for the TUI entrypoint so it can find the bleachbit modules
+  # Ensure the TUI can find its modules
   sed -i '/import sys/a sys.path.append("/usr/share/")' "$pkgdir/usr/bin/bleachbit-tui"
 
-  # Install the universal terminal wrapper
   install -Dm755 "$srcdir/bleachbit-tui-launcher.sh" "$pkgdir/usr/bin/bleachbit-tui-launcher"
-
-  # Install the custom TUI desktop shortcut
   install -Dm644 "$srcdir/bleachbit-tui.desktop" "$pkgdir/usr/share/applications/bleachbit-tui.desktop"
 }

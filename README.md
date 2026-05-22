@@ -31,3 +31,26 @@ To run the full test suite locally, navigate to a package directory and run:
 
 ## 📜 Maintenance
 This hub is the single source of truth for these packages. Updates are first verified here before being pushed to the Arch User Repository.
+
+### Maintenance Flow
+
+1. Edit any `PKGBUILD` (and supporting files) in this repository.
+2. Push to GitHub (`master` branch).
+3. GitHub Actions runs `verify` job:
+   - `namcap` on `PKGBUILD`
+   - Full clean chroot build (`extra-x86_64-build`)
+   - `namcap` + `ldd` integrity check on the resulting package
+4. On success, the changes are ready.
+5. Nightly (or manual dispatch) the `update` job:
+   - `nvchecker` detects new upstream versions
+   - `PKGBUILD`s are automatically updated, checksums refreshed, `.SRCINFO` regenerated
+   - Updated packages are built and pushed to the corresponding real AUR repositories via SSH
+6. The real AUR repos (`ssh://aur@aur.archlinux.org/<pkgname>.git`) always contain only the minimal professional files.
+
+Only the following files are ever synced to the real AUR:
+- `PKGBUILD`
+- `.SRCINFO`
+- `*.desktop`, `*.service`, `*.install`
+- Required launcher scripts (e.g. `bleachbit-tui-launcher.sh`)
+
+`test-package.sh`, build artifacts, and hub-only scripts are never published to the AUR.

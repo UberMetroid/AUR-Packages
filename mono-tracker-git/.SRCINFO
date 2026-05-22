@@ -1,7 +1,7 @@
 pkgbase = mono-tracker-git
 	pkgdesc = Privacy-first screen time tracking application for Linux with TUI dashboard
 	pkgver = v0.3.0.r1.40d062f
-	pkgrel = 4
+	pkgrel = 5
 	url = https://github.com/xonoxc/mono
 	arch = x86_64
 	license = MIT
@@ -14,11 +14,11 @@ pkgbase = mono-tracker-git
 	depends = zstd
 	depends = libxkbcommon
 	depends = wayland
-	provides = mono-tracker
-	provides = mono
+	provides = mono-tracker=v0.3.0
+	provides = mono=v0.3.0
 	conflicts = mono-tracker
 	conflicts = mono
-	source = git+https://github.com/xonoxc/mono.git
+	source = mono::git+https://github.com/xonoxc/mono.git
 	source = mono-tracker.service
 	source = mono-tracker.desktop
 	source = mono-dashboard.desktop

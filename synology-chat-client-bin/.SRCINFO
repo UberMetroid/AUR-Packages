@@ -1,7 +1,7 @@
 pkgbase = synology-chat-client-bin
 	pkgdesc = Desktop client for Synology Chat
 	pkgver = 1.2.3_0232
-	pkgrel = 1
+	pkgrel = 2
 	url = https://www.synology.com/dsm/feature/chat
 	arch = x86_64
 	license = custom:Synology

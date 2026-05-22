@@ -82,7 +82,12 @@ jobs:
                 git clone 'ssh://aur@aur.archlinux.org/${pkgname}.git' /tmp/${pkgname}-aur
               fi
               
-              rsync -a --delete --exclude='.git' ${pkgname}/ /tmp/${pkgname}-aur/
+              # Only sync files that belong in the real AUR repository
+              rsync -a --delete \
+                --exclude='.git' \
+                --exclude='test-package.sh' \
+                --exclude='*.log' \
+                ${pkgname}/ /tmp/${pkgname}-aur/
               cd /tmp/${pkgname}-aur
               git add .
               git diff --staged --quiet || (git commit -m 'Update from AUR-Packages hub' && git push origin master)
@@ -138,7 +143,7 @@ jobs:
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/synology-drive-client-bin.git" /tmp/synology-drive-client-bin-aur
-            rsync -a --delete --exclude=".git" synology-drive-client-bin/ /tmp/synology-drive-client-bin-aur/
+            rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" synology-drive-client-bin/ /tmp/synology-drive-client-bin-aur/
             cd /tmp/synology-drive-client-bin-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
@@ -154,7 +159,7 @@ jobs:
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/synology-chat-client-bin.git" /tmp/synology-chat-client-bin-aur
-            rsync -a --delete --exclude=".git" synology-chat-client-bin/ /tmp/synology-chat-client-bin-aur/
+            rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" synology-chat-client-bin/ /tmp/synology-chat-client-bin-aur/
             cd /tmp/synology-chat-client-bin-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
@@ -170,7 +175,7 @@ jobs:
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/mono-tracker-git.git" /tmp/mono-tracker-git-aur
-            rsync -a --delete --exclude=".git" mono-tracker-git/ /tmp/mono-tracker-git-aur/
+            rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" mono-tracker-git/ /tmp/mono-tracker-git-aur/
             cd /tmp/mono-tracker-git-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
@@ -186,7 +191,7 @@ jobs:
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/msty-studio-bin.git" /tmp/msty-studio-bin-aur
-            rsync -a --delete --exclude=".git" msty-studio-bin/ /tmp/msty-studio-bin-aur/
+            rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" msty-studio-bin/ /tmp/msty-studio-bin-aur/
             cd /tmp/msty-studio-bin-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
@@ -202,7 +207,7 @@ jobs:
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/msty-claw-bin.git" /tmp/msty-claw-bin-aur
-            rsync -a --delete --exclude=".git" msty-claw-bin/ /tmp/msty-claw-bin-aur/
+            rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" msty-claw-bin/ /tmp/msty-claw-bin-aur/
             cd /tmp/msty-claw-bin-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
@@ -219,7 +224,7 @@ jobs:
             git config --global user.email "jerydleuck@gmail.com"
             # Note: The AUR repo for bleachbit-tui-git must be created first before auto-push will work.
             git clone "ssh://aur@aur.archlinux.org/bleachbit-tui-git.git" /tmp/bleachbit-tui-git-aur || exit 0
-            rsync -a --delete --exclude=".git" bleachbit-tui-git/ /tmp/bleachbit-tui-git-aur/
+            rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" bleachbit-tui-git/ /tmp/bleachbit-tui-git-aur/
             cd /tmp/bleachbit-tui-git-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
