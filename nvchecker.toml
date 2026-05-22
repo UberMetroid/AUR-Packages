@@ -26,3 +26,14 @@ git = "https://github.com/xonoxc/mono.git"
 source = "git"
 git = "https://github.com/bleachbit/bleachbit.git"
 branch = "tui"
+
+[equibop-client-bin]
+source = "github"
+github = "Equicord/Equibop"
+use_latest_release = true
+prefix = "v"
+
+[ledger-live-client-bin]
+source = "regex"
+url = "https://download.live.ledger.com/latest-linux.yml"
+regex = 'version: ([0-9.]+)'

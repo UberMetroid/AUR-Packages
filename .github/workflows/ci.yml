@@ -63,7 +63,7 @@ jobs:
         changed_files=$(git diff --name-only origin/master)
         echo "Changed files: $changed_files"
         
-        for pkgname in synology-drive-client-bin synology-chat-client-bin mono-tracker-git msty-studio-bin msty-claw-bin bleachbit-tui-git; do
+        for pkgname in synology-drive-client-bin synology-chat-client-bin mono-tracker-git msty-studio-bin msty-claw-bin bleachbit-tui-git equibop-client-bin ledger-live-client-bin; do
           if echo "$changed_files" | grep -q "^$pkgname/"; then
             echo "Package $pkgname has updates. Building and deploying..."
             
@@ -226,6 +226,38 @@ jobs:
             git clone "ssh://aur@aur.archlinux.org/bleachbit-tui-git.git" /tmp/bleachbit-tui-git-aur || exit 0
             rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" bleachbit-tui-git/ /tmp/bleachbit-tui-git-aur/
             cd /tmp/bleachbit-tui-git-aur
+            git add .
+            git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
+          '
+        fi
+      continue-on-error: true
+
+    - name: equibop-client-bin
+      run: |
+        sudo -H -u builduser bash equibop-client-bin/test-package.sh
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+          sudo -H -u builduser bash -c '
+            git config --global user.name "UberMetroid"
+            git config --global user.email "jerydleuck@gmail.com"
+            git clone "ssh://aur@aur.archlinux.org/equibop-client-bin.git" /tmp/equibop-client-bin-aur || exit 0
+            rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" equibop-client-bin/ /tmp/equibop-client-bin-aur/
+            cd /tmp/equibop-client-bin-aur
+            git add .
+            git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
+          '
+        fi
+      continue-on-error: true
+
+    - name: ledger-live-client-bin
+      run: |
+        sudo -H -u builduser bash ledger-live-client-bin/test-package.sh
+        if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
+          sudo -H -u builduser bash -c '
+            git config --global user.name "UberMetroid"
+            git config --global user.email "jerydleuck@gmail.com"
+            git clone "ssh://aur@aur.archlinux.org/ledger-live-client-bin.git" /tmp/ledger-live-client-bin-aur || exit 0
+            rsync -a --delete --exclude=".git" --exclude="test-package.sh" --exclude="*.log" ledger-live-client-bin/ /tmp/ledger-live-client-bin-aur/
+            cd /tmp/ledger-live-client-bin-aur
             git add .
             git diff --staged --quiet || (git commit -m "Update from AUR-Packages hub" && git push origin master)
           '

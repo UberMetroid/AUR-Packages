@@ -10,6 +10,8 @@ This repository serves as a centralized management hub and CI/CD pipeline for AU
 | :--- | :--- | :--- |
 | [**synology-drive-client-bin**](https://aur.archlinux.org/packages/synology-drive-client-bin) | Official Synology Drive Client desktop application | [AUR](https://aur.archlinux.org/packages/synology-drive-client-bin) |
 | [**synology-chat-client-bin**](https://aur.archlinux.org/packages/synology-chat-client-bin) | Desktop client for Synology Chat | [AUR](https://aur.archlinux.org/packages/synology-chat-client-bin) |
+| [**equibop-client-bin**](https://aur.archlinux.org/packages/equibop-client-bin) | Equicord-enabled Discord client (client-bin) | [AUR](https://aur.archlinux.org/packages/equibop-client-bin) |
+| [**ledger-live-client-bin**](https://aur.archlinux.org/packages/ledger-live-client-bin) | Official Ledger Wallet desktop application (client-bin) | [AUR](https://aur.archlinux.org/packages/ledger-live-client-bin) |
 | [**msty-studio-bin**](https://aur.archlinux.org/packages/msty-studio-bin) | Desktop AI workflow application (Local/Private) | [AUR](https://aur.archlinux.org/packages/msty-studio-bin) |
 | [**msty-claw-bin**](https://aur.archlinux.org/packages/msty-claw-bin) | Autonomous AI agent for complex task orchestration | [AUR](https://aur.archlinux.org/packages/msty-claw-bin) |
 | [**mono-tracker-git**](https://aur.archlinux.org/packages/mono-tracker-git) | Privacy-first screen time tracking application | [AUR](https://aur.archlinux.org/packages/mono-tracker-git) |
@@ -31,6 +33,8 @@ To run the full test suite locally, navigate to a package directory and run:
 
 ## 📜 Maintenance
 This hub is the single source of truth for these packages. Updates are first verified here before being pushed to the Arch User Repository.
+
+All packages follow the standards defined in [BEST_PRACTICES.md](BEST_PRACTICES.md). New packages and retrofits must adhere to these rules for consistency, security, and user experience.
 
 ### Maintenance Flow
 
