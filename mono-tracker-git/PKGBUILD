@@ -5,7 +5,7 @@
 pkgname=mono-tracker-git
 _pkgname=mono
 pkgver=v0.3.0.r1.40d062f
-pkgrel=5
+pkgrel=6
 pkgdesc="Privacy-first screen time tracking application (git, verified with clean chroot + ldd checks)"
 arch=('x86_64')
 url="https://github.com/xonoxc/mono"

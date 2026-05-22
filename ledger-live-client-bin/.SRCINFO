@@ -1,7 +1,7 @@
 pkgbase = ledger-live-client-bin
 	pkgdesc = Official Ledger Wallet desktop application (client-bin, verified with clean chroot + ldd checks)
 	pkgver = 4.4.0
-	pkgrel = 1
+	pkgrel = 2
 	url = https://www.ledger.com/ledger-wallet
 	arch = x86_64
 	license = custom:MIT

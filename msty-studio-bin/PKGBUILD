@@ -4,7 +4,7 @@
 
 pkgname=msty-studio-bin
 pkgver=2.7.4
-pkgrel=2
+pkgrel=3
 pkgdesc="Desktop AI workflow application (Local/Private) (client-bin, verified with clean chroot + ldd checks)"
 arch=('x86_64')
 url="https://msty.ai/"

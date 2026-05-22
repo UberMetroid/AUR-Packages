@@ -5,7 +5,7 @@
 pkgname=synology-chat-client-bin
 pkgver=1.2.3_0232
 _pkgver=1.2.3-0232
-pkgrel=2
+pkgrel=3
 pkgdesc="Desktop client for Synology Chat"
 arch=('x86_64')
 url="https://www.synology.com/dsm/feature/chat"
