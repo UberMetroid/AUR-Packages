@@ -1,8 +1,9 @@
 pkgbase = msty-studio-bin
-	pkgdesc = Desktop AI workflow application (Local/Private)
+	pkgdesc = Desktop AI workflow application (Local/Private) (client-bin, verified with clean chroot + ldd checks)
 	pkgver = 2.7.4
 	pkgrel = 2
 	url = https://msty.ai/
+	install = msty-studio-bin.install
 	arch = x86_64
 	license = custom:proprietary
 	depends = alsa-lib

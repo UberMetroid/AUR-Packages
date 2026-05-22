@@ -1,5 +1,6 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
 # Part of https://github.com/UberMetroid/AUR-Packages (clean chroot + ldd verified)
+# Follows BEST_PRACTICES.md
 
 pkgname=synology-chat-client-bin
 pkgver=1.2.3_0232
@@ -14,6 +15,7 @@ optdepends=('libappindicator-gtk3: Status tray icon support')
 provides=("synology-chat=${pkgver}")
 conflicts=('synology-chat')
 options=('!strip' '!debug')
+install=${pkgname}.install
 
 source=("Synology_Chat_Client-${_pkgver}.deb::https://global.synologydownload.com/download/Utility/ChatClient/${_pkgver}/Ubuntu/x86_64/Synology%20Chat%20Client-${_pkgver}.deb")
 sha256sums=('92bf9e650de82556f0959dd1c6923a0134c515c464095ef7c26210cf8ccc5161')

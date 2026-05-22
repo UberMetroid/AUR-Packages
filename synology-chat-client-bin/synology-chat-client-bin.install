@@ -1,0 +1,8 @@
+post_install() {
+  echo ">>> Synology Chat Client installed successfully."
+  echo ">>> Launch with: synology-chat"
+}
+
+post_upgrade() {
+  post_install
+}

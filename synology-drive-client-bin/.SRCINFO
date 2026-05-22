@@ -1,5 +1,5 @@
 pkgbase = synology-drive-client-bin
-	pkgdesc = Official Synology Drive Client desktop application (official binary repack)
+	pkgdesc = Official Synology Drive Client desktop application (client-bin, verified with clean chroot + ldd checks)
 	pkgver = 4.0.3_17892
 	pkgrel = 8
 	url = https://www.synology.com/en-global/releaseNote/SynologyDriveClient

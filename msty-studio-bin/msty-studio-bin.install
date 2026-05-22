@@ -1,0 +1,8 @@
+post_install() {
+  echo ">>> Msty Studio installed successfully."
+  echo ">>> Launch with: msty or msty-studio"
+}
+
+post_upgrade() {
+  post_install
+}

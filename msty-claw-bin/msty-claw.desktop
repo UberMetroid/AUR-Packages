@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Msty Claw
+GenericName=Autonomous AI Agent
+Comment=Autonomous AI agent for complex task orchestration
+Exec=msty-claw
+Icon=msty-claw
+Terminal=false
+StartupNotify=true
+Categories=Office;Utility;Development;
+Keywords=ai;agent;automation;msty;
+StartupWMClass=Msty Claw

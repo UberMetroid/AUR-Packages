@@ -1,11 +1,12 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
 # Part of https://github.com/UberMetroid/AUR-Packages (clean chroot + ldd verified)
+# Follows BEST_PRACTICES.md
 
 pkgname=mono-tracker-git
 _pkgname=mono
 pkgver=v0.3.0.r1.40d062f
 pkgrel=5
-pkgdesc="Privacy-first screen time tracking application for Linux with TUI dashboard"
+pkgdesc="Privacy-first screen time tracking application (git, verified with clean chroot + ldd checks)"
 arch=('x86_64')
 url="https://github.com/xonoxc/mono"
 license=('MIT')
@@ -13,6 +14,7 @@ depends=('gcc-libs' 'glibc' 'sqlite' 'zstd' 'libxkbcommon' 'wayland')
 makedepends=('cargo' 'git' 'pkgconf')
 provides=("mono-tracker=${pkgver%%.r*}")
 conflicts=('mono-tracker')
+install=${pkgname}.install
 source=("$_pkgname::git+${url}.git"
         "mono-tracker.service"
         "mono-tracker.desktop"

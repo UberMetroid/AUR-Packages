@@ -1,0 +1,10 @@
+post_install() {
+  echo ">>> Mono Tracker installed successfully."
+  echo ">>> The tracker runs as a user service. Enable it with:"
+  echo ">>>   systemctl --user enable --now mono-tracker"
+  echo ">>> View the dashboard with: mono"
+}
+
+post_upgrade() {
+  post_install
+}

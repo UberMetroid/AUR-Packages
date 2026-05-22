@@ -1,8 +1,9 @@
 pkgbase = bleachbit-tui-git
-	pkgdesc = Free space and maintain privacy (Experimental TUI branch)
+	pkgdesc = Free space and maintain privacy (Experimental TUI branch) (git, verified with clean chroot + ldd checks)
 	pkgver = 6.0.0.r17.9bb4a493
 	pkgrel = 5
 	url = https://github.com/bleachbit/bleachbit
+	install = bleachbit-tui-git.install
 	arch = any
 	license = GPL-3.0-or-later
 	makedepends = git

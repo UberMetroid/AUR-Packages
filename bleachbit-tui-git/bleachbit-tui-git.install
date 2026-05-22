@@ -1,0 +1,8 @@
+post_install() {
+  echo ">>> BleachBit TUI installed successfully."
+  echo ">>> Launch the TUI with: bleachbit-tui or bleachbit-tui-launcher"
+}
+
+post_upgrade() {
+  post_install
+}

@@ -3,6 +3,7 @@ pkgbase = synology-chat-client-bin
 	pkgver = 1.2.3_0232
 	pkgrel = 2
 	url = https://www.synology.com/dsm/feature/chat
+	install = synology-chat-client-bin.install
 	arch = x86_64
 	license = custom:Synology
 	depends = alsa-lib

@@ -1,8 +1,9 @@
 pkgbase = msty-claw-bin
-	pkgdesc = Msty Claw is an autonomous AI agent application designed for complex task orchestration (Beta)
+	pkgdesc = Autonomous AI agent for complex task orchestration (client-bin, verified with clean chroot + ldd checks)
 	pkgver = 0.7.0
 	pkgrel = 2
 	url = https://msty.ai/claw
+	install = msty-claw-bin.install
 	arch = x86_64
 	license = custom:proprietary
 	depends = gtk3
@@ -18,6 +19,8 @@ pkgbase = msty-claw-bin
 	provides = msty-claw
 	conflicts = msty-claw
 	source = MstyClaw_amd64_0.7.0.deb::https://next-assets.msty.studio/mstyclaw/latest/linux/MstyClaw_amd64.deb?ver=0.7.0
+	source = msty-claw.desktop
 	sha256sums = d05967d6ce920b865b1b58cb6612e68b1f0426e4b00e3f07c29b89c50d83156d
+	sha256sums = SKIP
 
 pkgname = msty-claw-bin

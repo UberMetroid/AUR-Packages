@@ -1,12 +1,13 @@
 # Maintainer: jeryd leuck <jerydleuck@gmail.com>
 # Part of https://github.com/UberMetroid/AUR-Packages (clean chroot + ldd verified)
+# Follows BEST_PRACTICES.md
 
 pkgname=synology-drive-client-bin
 pkgver=4.0.3_17892
 _pkgver=4.0.3
 _pkgrel=17892
 pkgrel=8
-pkgdesc="Official Synology Drive Client desktop application (official binary repack)"
+pkgdesc="Official Synology Drive Client desktop application (client-bin, verified with clean chroot + ldd checks)"
 arch=('x86_64')
 url="https://www.synology.com/en-global/releaseNote/SynologyDriveClient"
 license=('custom:Synology Linux License Grant')
