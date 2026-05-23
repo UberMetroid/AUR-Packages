@@ -66,6 +66,7 @@ jobs:
         mkdir -p /home/builduser/.ssh
         printf "%s\n" "$AUR_SSH_PRIVATE_KEY" > /home/builduser/.ssh/id_rsa
         chmod 600 /home/builduser/.ssh/id_rsa
+        ssh-keygen -l -f /home/builduser/.ssh/id_rsa || echo "INVALID KEY"
         ssh-keyscan aur.archlinux.org >> /home/builduser/.ssh/known_hosts
         chown -R builduser:builduser /home/builduser/.ssh
         
@@ -169,6 +170,7 @@ jobs:
         mkdir -p /home/builduser/.ssh
         printf "%s\n" "$AUR_SSH_PRIVATE_KEY" > /home/builduser/.ssh/id_rsa
         chmod 600 /home/builduser/.ssh/id_rsa
+        ssh-keygen -l -f /home/builduser/.ssh/id_rsa || echo "INVALID KEY"
         ssh-keyscan aur.archlinux.org >> /home/builduser/.ssh/known_hosts
         chown -R builduser:builduser /home/builduser/.ssh
 
