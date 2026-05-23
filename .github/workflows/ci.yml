@@ -35,6 +35,11 @@ jobs:
     - name: Setup environment and SSH
       run: |
         pacman -Syu --noconfirm base-devel devtools jq nvchecker pacman-contrib git sudo openssh rsync namcap
+
+        # Fix systemd-nspawn / machine-id so extra-x86_64-build works reliably in GitHub Actions
+        pacman -S --noconfirm systemd
+        systemd-machine-id-setup || echo "uninitialized" > /etc/machine-id
+
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
         
@@ -118,6 +123,11 @@ jobs:
     - name: Setup environment and SSH
       run: |
         pacman -Syu --noconfirm base-devel devtools namcap sudo git openssh rsync
+
+        # Fix systemd-nspawn / machine-id so extra-x86_64-build works reliably in GitHub Actions
+        pacman -S --noconfirm systemd
+        systemd-machine-id-setup || echo "uninitialized" > /etc/machine-id
+
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
