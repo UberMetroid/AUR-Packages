@@ -51,6 +51,14 @@ jobs:
 
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+        # Overwrite extra-x86_64-build because systemd-nspawn fails inside docker containers
+        cat <<'EOF' > /usr/bin/extra-x86_64-build
+#!/bin/bash
+echo "=== CI Build Fallback (makepkg) ==="
+makepkg -s --noconfirm
+EOF
+        chmod +x /usr/bin/extra-x86_64-build
         
         # Set git safe directories
         git config --global --add safe.directory '*'
@@ -148,6 +156,14 @@ jobs:
 
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+        # Overwrite extra-x86_64-build because systemd-nspawn fails inside docker containers
+        cat <<'EOF' > /usr/bin/extra-x86_64-build
+#!/bin/bash
+echo "=== CI Build Fallback (makepkg) ==="
+makepkg -s --noconfirm
+EOF
+        chmod +x /usr/bin/extra-x86_64-build
 
         # Set git safe directories
         git config --global --add safe.directory '*'
