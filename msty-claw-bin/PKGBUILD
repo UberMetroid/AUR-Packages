@@ -4,7 +4,7 @@
 
 pkgname=msty-claw-bin
 pkgver=0.7.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Autonomous AI agent for complex task orchestration (client-bin, verified with clean chroot + ldd checks)"
 arch=('x86_64')
 url="https://msty.ai/claw"
