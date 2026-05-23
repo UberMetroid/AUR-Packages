@@ -4,7 +4,7 @@
 
 pkgname=msty-studio-bin
 pkgver=2.7.4
-pkgrel=4
+pkgrel=5
 pkgdesc="Desktop AI workflow application (Local/Private) (client-bin, verified with clean chroot + ldd checks)"
 arch=('x86_64')
 url="https://msty.ai/"
@@ -20,7 +20,7 @@ conflicts=('msty-studio' 'msty' 'msty-bin')
 install=${pkgname}.install
 
 source=("MstyStudio_amd64_${pkgver}.deb::https://next-assets.msty.studio/app/latest/linux/MstyStudio_amd64.deb?ver=$pkgver")
-sha256sums=('ef26a2ee5d764e7a2939b8a580a2b3af94300fbc7773f1b53335c9d450f2a97f')
+sha256sums=('8a0de485494809d25c5d084cb055b0c0f4e4195f409cef14364b6c4dddb8ca3f')
 
 prepare() {
   mkdir -p "$srcdir/pkg-contents"
