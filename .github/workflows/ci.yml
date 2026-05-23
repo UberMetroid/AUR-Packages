@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux:latest
-      options: --privileged
+      options: --privileged --cgroupns=host
     steps:
     - name: Pre-install git for checkout
       run: pacman -Sy --noconfirm git
@@ -34,11 +34,17 @@ jobs:
 
     - name: Setup environment and SSH
       run: |
-        pacman -Syu --noconfirm base-devel devtools jq nvchecker pacman-contrib git sudo openssh rsync namcap
+        pacman -Syu --noconfirm base-devel devtools jq nvchecker pacman-contrib git sudo openssh rsync namcap dbus
 
         # Fix systemd-nspawn / machine-id so extra-x86_64-build works reliably in GitHub Actions
         pacman -S --noconfirm systemd
         systemd-machine-id-setup || echo "uninitialized" > /etc/machine-id
+
+        # Start system D-Bus (required for systemd-nspawn / extra-x86_64-build)
+        mkdir -p /run/dbus
+        dbus-daemon --system --address=unix:path=/run/dbus/system_bus_socket --nofork &
+        sleep 2
+        export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
 
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -111,7 +117,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: archlinux:latest
-      options: --privileged
+      options: --privileged --cgroupns=host
 
     steps:
     - name: Pre-install git for checkout
@@ -122,11 +128,17 @@ jobs:
 
     - name: Setup environment and SSH
       run: |
-        pacman -Syu --noconfirm base-devel devtools namcap sudo git openssh rsync
+        pacman -Syu --noconfirm base-devel devtools namcap sudo git openssh rsync dbus
 
         # Fix systemd-nspawn / machine-id so extra-x86_64-build works reliably in GitHub Actions
         pacman -S --noconfirm systemd
         systemd-machine-id-setup || echo "uninitialized" > /etc/machine-id
+
+        # Start system D-Bus (required for systemd-nspawn / extra-x86_64-build)
+        mkdir -p /run/dbus
+        dbus-daemon --system --address=unix:path=/run/dbus/system_bus_socket --nofork &
+        sleep 2
+        export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
 
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
