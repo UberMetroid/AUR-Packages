@@ -40,11 +40,14 @@ jobs:
         pacman -S --noconfirm systemd
         systemd-machine-id-setup || echo "uninitialized" > /etc/machine-id
 
-        # Start system D-Bus (required for systemd-nspawn / extra-x86_64-build)
+        # Start system D-Bus reliably for systemd-nspawn (extra-x86_64-build)
         mkdir -p /run/dbus
-        dbus-daemon --system --address=unix:path=/run/dbus/system_bus_socket --nofork &
+        dbus-uuidgen --ensure=/etc/machine-id || true
+        dbus-daemon --system --fork --address=unix:path=/run/dbus/system_bus_socket || true
         sleep 2
+        chmod 666 /run/dbus/system_bus_socket || true
         export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+        echo "DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket" >> /etc/environment || true
 
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -66,7 +69,7 @@ jobs:
       run: |
         git config --global user.name "UberMetroid"
         git config --global user.email "jerydleuck@gmail.com"
-        sudo -H -u builduser bash scripts/update-packages.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash scripts/update-packages.sh
 
     - name: Build and Push updated packages to AUR
       run: |
@@ -79,11 +82,11 @@ jobs:
             echo "Package $pkgname has updates. Building and deploying..."
             
             # Run build and test
-            sudo -H -u builduser bash $pkgname/test-package.sh
+            sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash $pkgname/test-package.sh
             
             # Deploy to AUR
             echo "Deploying $pkgname to AUR..."
-            sudo -H -u builduser bash -c "
+            sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c "
               git config --global user.name 'UberMetroid'
               git config --global user.email 'jerydleuck@gmail.com'
               
@@ -134,11 +137,14 @@ jobs:
         pacman -S --noconfirm systemd
         systemd-machine-id-setup || echo "uninitialized" > /etc/machine-id
 
-        # Start system D-Bus (required for systemd-nspawn / extra-x86_64-build)
+        # Start system D-Bus reliably for systemd-nspawn (extra-x86_64-build)
         mkdir -p /run/dbus
-        dbus-daemon --system --address=unix:path=/run/dbus/system_bus_socket --nofork &
+        dbus-uuidgen --ensure=/etc/machine-id || true
+        dbus-daemon --system --fork --address=unix:path=/run/dbus/system_bus_socket || true
         sleep 2
+        chmod 666 /run/dbus/system_bus_socket || true
         export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
+        echo "DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket" >> /etc/environment || true
 
         useradd -m builduser
         echo "builduser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
@@ -159,9 +165,9 @@ jobs:
 
     - name: synology-drive-client-bin
       run: |
-        sudo -H -u builduser bash synology-drive-client-bin/test-package.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash synology-drive-client-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -H -u builduser bash -c '
+          sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/synology-drive-client-bin.git" /tmp/synology-drive-client-bin-aur
@@ -175,9 +181,9 @@ jobs:
 
     - name: synology-chat-client-bin
       run: |
-        sudo -H -u builduser bash synology-chat-client-bin/test-package.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash synology-chat-client-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -H -u builduser bash -c '
+          sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/synology-chat-client-bin.git" /tmp/synology-chat-client-bin-aur
@@ -191,9 +197,9 @@ jobs:
 
     - name: mono-tracker-git
       run: |
-        sudo -H -u builduser bash mono-tracker-git/test-package.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash mono-tracker-git/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -H -u builduser bash -c '
+          sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/mono-tracker-git.git" /tmp/mono-tracker-git-aur
@@ -207,9 +213,9 @@ jobs:
 
     - name: msty-studio-bin
       run: |
-        sudo -H -u builduser bash msty-studio-bin/test-package.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash msty-studio-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -H -u builduser bash -c '
+          sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/msty-studio-bin.git" /tmp/msty-studio-bin-aur
@@ -223,9 +229,9 @@ jobs:
 
     - name: msty-claw-bin
       run: |
-        sudo -H -u builduser bash msty-claw-bin/test-package.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash msty-claw-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -H -u builduser bash -c '
+          sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/msty-claw-bin.git" /tmp/msty-claw-bin-aur
@@ -239,9 +245,9 @@ jobs:
 
     - name: bleachbit-tui-git
       run: |
-        sudo -H -u builduser bash bleachbit-tui-git/test-package.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash bleachbit-tui-git/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -H -u builduser bash -c '
+          sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             # Note: The AUR repo for bleachbit-tui-git must be created first before auto-push will work.
@@ -256,9 +262,9 @@ jobs:
 
     - name: equibop-client-bin
       run: |
-        sudo -H -u builduser bash equibop-client-bin/test-package.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash equibop-client-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -H -u builduser bash -c '
+          sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/equibop-client-bin.git" /tmp/equibop-client-bin-aur || exit 0
@@ -272,9 +278,9 @@ jobs:
 
     - name: ledger-live-client-bin
       run: |
-        sudo -H -u builduser bash ledger-live-client-bin/test-package.sh
+        sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash ledger-live-client-bin/test-package.sh
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/master" ]]; then
-          sudo -H -u builduser bash -c '
+          sudo -H -u builduser env DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket bash -c '
             git config --global user.name "UberMetroid"
             git config --global user.email "jerydleuck@gmail.com"
             git clone "ssh://aur@aur.archlinux.org/ledger-live-client-bin.git" /tmp/ledger-live-client-bin-aur || exit 0
